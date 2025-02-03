@@ -1,0 +1,50 @@
+1. **Initial commit** – Setup project structure
+2. **Add Flutter dependencies** – Include necessary packages for Flutter
+3. **Create main.dart file** – Setup entry point of the application
+4. **Create initial home screen layout** – Basic UI structure for home screen
+5. **Implement basic navigation** – Setup navigation to next screen
+6. **Add basic app theme** – Define global theme for the app
+7. **Setup project folder structure** – Organize project into features and components
+8. **Add app bar and drawer** – Implement app bar and navigation drawer
+9. **Create login screen UI** – Design the login form
+10. **Add form validation to login screen** – Validate user input on login form
+11. **Create register screen UI** – Design the registration form
+12. **Add form validation to register screen** – Validate user input on register form
+13. **Create user profile screen UI** – Design the user profile screen
+14. **Integrate user authentication API** – Connect to backend for login/signup
+15. **Add splash screen** – Implement a splash screen on app launch
+16. **Setup local storage for authentication tokens** – Store tokens securely
+17. **Create home screen grid layout** – Design grid view for items
+18. **Implement item list API call** – Fetch data from server for displaying items
+19. **Add search functionality** – Implement search bar for filtering items
+20. **Create item detail page** – Display detailed information for a selected item
+21. **Add item image support** – Implement image display for each item
+22. **Add user profile update functionality** – Allow users to update their profile
+23. **Create settings screen** – Design settings page with options
+24. **Integrate theme switching** – Implement dark/light mode toggle
+25. **Add push notification setup** – Configure Firebase Cloud Messaging (FCM)
+26. **Create cart screen** – Design cart UI for selected items
+27. **Add cart item management** – Enable adding/removing items in the cart
+28. **Integrate checkout API** – Connect to backend for checkout process
+29. **Add payment gateway integration** – Implement payment integration (e.g., Stripe)
+30. **Add order summary page** – Show a summary of the order before confirming
+31. **Create order confirmation page** – Display order confirmation details
+32. **Implement order history page** – Display user’s past orders
+33. **Add user review system** – Allow users to submit reviews for items
+34. **Create item rating UI** – Implement stars or rating system for items
+35. **Add item filtering by category** – Implement filter options for items
+36. **Create product category screen** – Design screen to display product categories
+37. **Add wishlist functionality** – Enable users to add items to a wishlist
+38. **Create wishlist screen** – Display items added to the wishlist
+39. **Implement user logout functionality** – Allow users to log out from the app
+40. **Add network error handling** – Show appropriate messages when no network is available
+41. **Create loading indicators** – Show loading spinners during data fetch
+42. **Optimize app performance** – Improve loading times and responsiveness
+43. **Add app localization support** – Implement multi-language support
+44. **Create about screen** – Design an about screen with app details
+45. **Setup unit testing** – Implement unit tests for critical components
+46. **Add widget testing** – Create widget tests for UI components
+47. **Setup CI/CD pipeline** – Integrate Continuous Integration for automated build and testing
+48. **Refactor code for readability** – Clean up code for better maintainability
+49. **Prepare app for production** – Final optimization and bug fixes
+50. **Publish app to App Store/Play Store** – Deploy the app to the app stores
