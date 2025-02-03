@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart'; // Import Google Fonts
+import 'page/homescreen.dart';  // Import HomeScreen
 
 void main() {
   runApp(const MyApp());
@@ -12,87 +13,35 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'CapungID',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        textTheme: GoogleFonts.robotoTextTheme( // Menggunakan font Roboto
-          Theme.of(context).textTheme.copyWith(
-            headlineMedium: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF2C6A77), // Biru Laut
-            ),
-            bodyLarge: TextStyle(
-              fontSize: 18,
-              color: Color(0xFF8E735B), // Cokelat Hangat
-            ),
-          ),
+        // Menggunakan Google Fonts Roboto sebagai default font
+        textTheme: GoogleFonts.robotoTextTheme(
+          Theme.of(context).textTheme,
+        ).apply(
+          bodyColor: Color(0xFF8E735B), // Cokelat Hangat untuk teks body
+          displayColor: Color(0xFF2C6A77), // Biru Laut untuk teks headline
         ),
-        colorScheme: ColorScheme(
+        colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: Colors.teal, // Menggunakan warna biru laut sebagai primarySwatch
+          accentColor: Color(0xFF8E735B), // Cokelat Hangat sebagai secondary
+          backgroundColor: Color(0xFFF5F5F5), // Background putih keabu-abuan
+          errorColor: Colors.red, // Warna merah untuk error
+          brightness: Brightness.light,
+        ).copyWith(
           primary: Color(0xFF2C6A77), // Biru Laut
           onPrimary: Colors.white,
           secondary: Color(0xFF8E735B), // Cokelat Hangat
           onSecondary: Colors.white,
           surface: Color(0xFFA8D5BA), // Hijau Lembut
           onSurface: Colors.black,
-          background: Color(0xFFF5F5F5),
-          onBackground: Colors.black,
-          error: Colors.red,
-          onError: Colors.white,
-          brightness: Brightness.light,
         ),
         floatingActionButtonTheme: FloatingActionButtonThemeData(
           backgroundColor: Color(0xFFD8B56D), // Emas Lembut
         ),
-        useMaterial3: true,
+        useMaterial3: true, // Mengaktifkan Material Design 3
       ),
-      home: const MyHomePage(title: 'CapungID Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFF2C6A77), // Biru Laut
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+      home: const HomeScreen(),  // Ganti dengan HomeScreen
     );
   }
 }
