@@ -1,12 +1,11 @@
-// deteksi_capung.dart
+import 'dart:typed_data';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:tflite/tflite.dart';
-// ignore: depend_on_referenced_packages
 import 'package:image/image.dart' as img;
-import 'dart:typed_data'; // Untuk menggunakan Uint8List
-import 'package:google_fonts/google_fonts.dart'; // Import Google Fonts
+import 'package:google_fonts/google_fonts.dart';
+import 'package:tflite_flutter/tflite_flutter.dart'; // Import tflite_flutter
 
 class DeteksiCapungPage extends StatefulWidget {
   const DeteksiCapungPage({super.key});
@@ -19,21 +18,36 @@ class _DeteksiCapungPageState extends State<DeteksiCapungPage> {
   File? _image;
   String _result = 'Belum ada deteksi';
   bool _isLoading = false;
+  Interpreter? _interpreter; // Interpreter untuk menjalankan model TFLite
+  List<String> labels = []; // List untuk menyimpan label
 
   // Memuat model TFLite
-  Future loadModel() async {
+  Future<void> loadModel() async {
     try {
-      await Tflite.loadModel(
-        model: 'assets/capung_model.tflite',
-        labels: 'assets/labels.txt',
-      );
+      // Memuat model dari file .tflite
+      _interpreter = await Interpreter.fromAsset('assets/capung_model.tflite');
+      print("Model berhasil dimuat");
     } catch (e) {
       print("Error loading model: $e");
+      setState(() {
+        _result = 'Gagal memuat model: $e';
+      });
+    }
+  }
+
+  // Memuat label dari file labels.txt
+  Future<void> loadLabels() async {
+    try {
+      var labelData = await rootBundle.loadString('assets/labels.txt');
+      labels = labelData.split('\n');
+      print("Labels berhasil dimuat");
+    } catch (e) {
+      print("Error loading labels: $e");
     }
   }
 
   // Fungsi untuk memilih gambar dari galeri
-  Future pickImageFromGallery() async {
+  Future<void> pickImageFromGallery() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
@@ -45,7 +59,7 @@ class _DeteksiCapungPageState extends State<DeteksiCapungPage> {
   }
 
   // Fungsi untuk mengambil gambar dari kamera
-  Future pickImageFromCamera() async {
+  Future<void> pickImageFromCamera() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
     if (pickedFile != null) {
@@ -57,7 +71,7 @@ class _DeteksiCapungPageState extends State<DeteksiCapungPage> {
   }
 
   // Fungsi untuk melakukan prediksi
-  Future detectImage(File image) async {
+  Future<void> detectImage(File image) async {
     setState(() {
       _isLoading = true;
       _result = 'Mendeteksi...';
@@ -81,18 +95,42 @@ class _DeteksiCapungPageState extends State<DeteksiCapungPage> {
       // Resize gambar agar sesuai dengan ukuran input model
       var resizedImage = img.copyResize(decodedImage, width: 224, height: 224);
 
-      // Mengonversi gambar hasil resize menjadi bytes dalam format yang diinginkan
-      var inputImage = Uint8List.fromList(img.encodeJpg(resizedImage));
+      // Mengonversi gambar hasil resize menjadi tensor input
+      var input = preprocessImage(resizedImage);
 
-      // Prediksi dengan model TensorFlow Lite
-      var recognitions = await Tflite.runModelOnBinary(binary: inputImage);
+      // Menyiapkan output sesuai dengan jumlah kelas (3 kelas dalam kasus ini)
+      var output = List.filled(1, List.filled(3, 0.0))
+          .reshape([1, 3]); // Sesuaikan dengan output model Anda
 
-      setState(() {
-        _isLoading = false;
-        _result = recognitions?.isNotEmpty ?? false
-            ? 'Prediksi: ${recognitions![0]['label']} (Confidence: ${(recognitions[0]['confidence'] * 100).toStringAsFixed(2)}%)'
-            : 'Gambar tidak dikenali';
-      });
+      // Menjalankan model
+      if (_interpreter != null) {
+        _interpreter!.run(input, output);
+
+        // Mengambil hasil prediksi
+        var recognitions = output[0];
+
+        // Menggunakan max dan indexOf untuk mencari label dengan confidence tertinggi
+        var maxConfidence = recognitions[0];
+        var labelIndex = 0;
+
+        for (int i = 1; i < recognitions.length; i++) {
+          if (recognitions[i] > maxConfidence) {
+            maxConfidence = recognitions[i];
+            labelIndex = i;
+          }
+        }
+
+        setState(() {
+          _isLoading = false;
+          _result =
+              'Prediksi: ${labels[labelIndex]} (Confidence: ${(maxConfidence * 100).toStringAsFixed(2)}%)';
+        });
+      } else {
+        setState(() {
+          _isLoading = false;
+          _result = 'Model tidak dimuat';
+        });
+      }
     } catch (e) {
       setState(() {
         _isLoading = false;
@@ -101,15 +139,35 @@ class _DeteksiCapungPageState extends State<DeteksiCapungPage> {
     }
   }
 
+  // Fungsi untuk memproses gambar menjadi tensor input
+  List<List<List<List<double>>>> preprocessImage(img.Image image) {
+    var input = List.generate(
+        1,
+        (_) => List.generate(
+            224, (_) => List.generate(224, (_) => List.filled(3, 0.0))));
+
+    for (var y = 0; y < image.height; y++) {
+      for (var x = 0; x < image.width; x++) {
+        var pixel = image.getPixel(x, y);
+        input[0][y][x][0] = pixel.r / 255.0; // Normalisasi channel Red
+        input[0][y][x][1] = pixel.g / 255.0; // Normalisasi channel Green
+        input[0][y][x][2] = pixel.b / 255.0; // Normalisasi channel Blue
+      }
+    }
+
+    return input;
+  }
+
   @override
   void initState() {
     super.initState();
     loadModel();
+    loadLabels();
   }
 
   @override
   void dispose() {
-    Tflite.close();
+    _interpreter?.close(); // Menutup interpreter saat widget di-dispose
     super.dispose();
   }
 
@@ -168,7 +226,8 @@ class _DeteksiCapungPageState extends State<DeteksiCapungPage> {
               // Status deteksi
               _isLoading
                   ? CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(const Color(0xFF2C6A77)),
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                          const Color(0xFF2C6A77)),
                     )
                   : Text(
                       _result,
@@ -186,7 +245,8 @@ class _DeteksiCapungPageState extends State<DeteksiCapungPage> {
                 onPressed: pickImageFromGallery,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF8E735B), // Cokelat Hangat
-                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -208,7 +268,8 @@ class _DeteksiCapungPageState extends State<DeteksiCapungPage> {
                 onPressed: pickImageFromCamera,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF8E735B), // Cokelat Hangat
-                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
