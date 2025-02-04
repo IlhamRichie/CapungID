@@ -72,6 +72,7 @@ flutter:
     - assets/logo/logocapung.jpg
     - assets/capung_model.tflite
     - assets/labels.txt
+    - assets/capung_model_v2.tflite
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

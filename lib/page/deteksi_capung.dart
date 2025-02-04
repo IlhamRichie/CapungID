@@ -25,7 +25,7 @@ class _DeteksiCapungPageState extends State<DeteksiCapungPage> {
   Future<void> loadModel() async {
     try {
       // Memuat model dari file .tflite
-      _interpreter = await Interpreter.fromAsset('assets/capung_model.tflite');
+      _interpreter = await Interpreter.fromAsset('assets/capung_model_v2.tflite');
       print("Model berhasil dimuat");
     } catch (e) {
       print("Error loading model: $e");

@@ -1,7 +1,11 @@
 // home_screen.dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'deteksi_capung.dart';  // Import halaman deteksi
+import 'bantuan/bantuan.dart';
+import 'deteksi_capung.dart';
+import 'jenis_capung/jenis_capung.dart';
+import 'metamorfosis_capung/metamorfosisi_capung.dart';
+import 'morfologi_capung/morfologi_capung.dart'; // Import halaman deteksi
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -39,7 +43,7 @@ class HomeScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
-              
+
               // Deskripsi Aplikasi (opsional)
               Text(
                 'Identifikasi spesies capung dengan mudah.',
@@ -51,24 +55,142 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 40),
 
-              // Tombol Deteksi Capung
+              // Tombol Jenis Capung
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const DeteksiCapungPage()),
+                    MaterialPageRoute(
+                        builder: (context) => const DeteksiCapungPage()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF8E735B), // Cokelat Hangat
-                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8), // Membuat tombol lebih modern dengan border radius
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  elevation: 4, // Menambahkan sedikit shadow untuk efek visual
+                  elevation: 4,
                 ),
                 child: Text(
                   'Deteksi Capung',
+                  style: GoogleFonts.roboto(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+
+              // Tombol Jenis Capung
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const JenisCapungPage()),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF8E735B), // Cokelat Hangat
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  elevation: 4,
+                ),
+                child: Text(
+                  'Jenis Capung',
+                  style: GoogleFonts.roboto(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+
+              // Tombol Morfologi Capung
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const MorfologiCapungPage()),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF8E735B), // Cokelat Hangat
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  elevation: 4,
+                ),
+                child: Text(
+                  'Morfologi Capung',
+                  style: GoogleFonts.roboto(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+
+              // Tombol Metamorfosis Capung
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const MetamorfosisCapungPage()),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF8E735B), // Cokelat Hangat
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  elevation: 4,
+                ),
+                child: Text(
+                  'Metamorfosis Capung',
+                  style: GoogleFonts.roboto(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+
+              // Tombol Bantuan
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const BantuanCapungPage()),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF8E735B), // Cokelat Hangat
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  elevation: 4,
+                ),
+                child: Text(
+                  'Bantuan',
                   style: GoogleFonts.roboto(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
