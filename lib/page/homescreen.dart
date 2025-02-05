@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../widgets/wave.dart';
 import 'bantuan/bantuan.dart';
 import 'chatbot/chatbot_capung.dart';
 import 'deteksi_capung.dart';
@@ -13,15 +14,15 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFfeca5c),
+      backgroundColor: const Color(0xFFFECA5C),
       body: SingleChildScrollView(
-        child: Column(
+        child: Stack(
           children: [
             // Wave AppBar sebagai background
             ClipPath(
-              clipper: WaveAppBar(),
+              clipper: WaveAppBarHome(),
               child: Container(
-                height: 200, // Tinggi AppBar disesuaikan
+                height: 330, // Tinggi AppBar disesuaikan
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [Color(0xFFda8937), Color(0xFFbb7224)],
@@ -32,86 +33,118 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
 
-            // Teks "CapungID" di tengah gelombang
-            Padding(
-              padding: const EdgeInsets.only(top:0),
-              child: Center(
-                child: Text(
-                  'CapungID',
-                  style: GoogleFonts.roboto(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+            // Teks "CapungID" dan Salam
+            Positioned(
+              top: 60, // Sesuaikan posisi vertikal teks
+              left: 0,
+              right: 0,
+              child: Column(
+                children: [
+                  Text(
+                    'CapungID™',
+                    style: GoogleFonts.roboto(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
+                  const SizedBox(height: 8),
+                  Text(
+                    getGreeting(),
+                    style: GoogleFonts.roboto(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
             ),
 
             // Konten utama (tombol-tombol)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: Column(
-                children: [
-                  _buildActionButton(
-                    context,
-                    'Deteksi Capung',
-                    'assets/images/5.png',
-                    'Temukan jenis capung',
-                    const DeteksiCapungPage(),
-                    Alignment.centerLeft,
-                  ),
-                  const SizedBox(height: 12),
-                  _buildActionButton(
-                    context,
-                    'Jenis Capung',
-                    'assets/images/3.png',
-                    'Kenali berbagai jenis',
-                    const JenisCapungPage(),
-                    Alignment.centerRight,
-                  ),
-                  const SizedBox(height: 12),
-                  _buildActionButton(
-                    context,
-                    'Morfologi Capung',
-                    'assets/images/4.png',
-                    'Pelajari bentuk tubuh',
-                    const MorfologiCapungPage(),
-                    Alignment.centerLeft,
-                  ),
-                  const SizedBox(height: 12),
-                  _buildActionButton(
-                    context,
-                    'Metamorfosis Capung',
-                    'assets/images/6.png',
-                    'Proses perubahan capung',
-                    const MetamorfosisCapungPage(),
-                    Alignment.centerRight,
-                  ),
-                  const SizedBox(height: 12),
-                  _buildActionButton(
-                    context,
-                    'Bantuan',
-                    'assets/images/1.png',
-                    'Butuh bantuan?',
-                    const BantuanCapungPage(),
-                    Alignment.centerLeft,
-                  ),
-                  const SizedBox(height: 12),
-                  _buildActionButton(
-                    context,
-                    'Chatbot',
-                    'assets/images/2.png',
-                    'Tanya jawab capung',
-                    const ChatScreen(), // Ganti dengan halaman chatbot
-                    Alignment.centerRight,
-                  ),
-                ],
+              padding: const EdgeInsets.only(top: 160), // Jarak dari atas
+              child: Center(
+                child: Column(
+                  mainAxisAlignment:
+                      MainAxisAlignment.center, // Pusatkan secara vertikal
+                  crossAxisAlignment:
+                      CrossAxisAlignment.center, // Pusatkan secara horizontal
+                  children: [
+                    _buildActionButton(
+                      context,
+                      'Deteksi Capung',
+                      'assets/images/5.png',
+                      'Temukan jenis capung',
+                      const DeteksiCapungPage(),
+                      Alignment.centerLeft,
+                    ),
+                    const SizedBox(height: 12),
+                    _buildActionButton(
+                      context,
+                      'Jenis Capung',
+                      'assets/images/3.png',
+                      'Kenali berbagai jenis',
+                      const JenisCapungPage(),
+                      Alignment.centerRight,
+                    ),
+                    const SizedBox(height: 12),
+                    _buildActionButton(
+                      context,
+                      'Morfologi Capung',
+                      'assets/images/4.png',
+                      'Pelajari bentuk tubuh',
+                      const MorfologiCapungPage(),
+                      Alignment.centerLeft,
+                    ),
+                    const SizedBox(height: 12),
+                    _buildActionButton(
+                      context,
+                      'Metamorfosis Capung',
+                      'assets/images/6.png',
+                      'Proses perubahan capung',
+                      const MetamorfosisCapungPage(),
+                      Alignment.centerRight,
+                    ),
+                    const SizedBox(height: 12),
+                    _buildActionButton(
+                      context,
+                      'Bantuan',
+                      'assets/images/1.png',
+                      'Butuh bantuan?',
+                      const BantuanCapungPage(),
+                      Alignment.centerLeft,
+                    ),
+                    const SizedBox(height: 12),
+                    _buildActionButton(
+                      context,
+                      'Chatbot',
+                      'assets/images/2.png',
+                      'Tanya jawab capung',
+                      const ChatScreen(), // Ganti dengan halaman chatbot
+                      Alignment.centerRight,
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  String getGreeting() {
+    final hour = DateTime.now().hour;
+    if (hour < 12) {
+      return '"Selamat Pagi"';
+    } else if (hour < 15) {
+      return '"Selamat Siang"';
+    } else if (hour < 18) {
+      return '"Selamat Sore"';
+    } else {
+      return '"Selamat Malam"';
+    }
   }
 
   Widget _buildActionButton(
@@ -137,11 +170,16 @@ class HomeScreen extends StatelessWidget {
         },
         borderRadius: BorderRadius.circular(AppSizes.cardRadius),
         child: Container(
-          width: MediaQuery.of(context).size.width * 0.9, // Lebar tombol dikurangi
+          width: MediaQuery.of(context).size.width *
+              0.92, // Lebar tombol dikurangi
           padding: const EdgeInsets.all(20.0),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(AppSizes.cardRadius),
+            border: Border.all(
+              color: const Color(0xFFbb7224), // Warna border
+              width: 3.0, // Ketebalan border
+            ),
           ),
           child: Row(
             mainAxisAlignment: alignment == Alignment.centerLeft
@@ -177,7 +215,8 @@ class HomeScreen extends StatelessWidget {
                           style: GoogleFonts.roboto(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white, // Warna dasar teks harus putih untuk gradasi
+                            color: Colors
+                                .white, // Warna dasar teks harus putih untuk gradasi
                           ),
                         ),
                       ),
@@ -208,58 +247,6 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-// Custom Clipper untuk bentuk gelombang pada AppBar
-class WaveAppBar extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    final path = Path();
-
-    // Mulai dari kiri atas
-    path.lineTo(0, size.height * 0.6); // Titik awal gelombang
-
-    // Gelombang pertama (ke bawah)
-    path.quadraticBezierTo(
-      size.width * 0.1,
-      size.height * 0.8,
-      size.width * 0.25,
-      size.height * 0.6,
-    );
-
-    // Gelombang kedua (ke atas)
-    path.quadraticBezierTo(
-      size.width * 0.4,
-      size.height * 0.4,
-      size.width * 0.5,
-      size.height * 0.7,
-    );
-
-    // Gelombang ketiga (ke bawah)
-    path.quadraticBezierTo(
-      size.width * 0.6,
-      size.height * 0.9,
-      size.width * 0.75,
-      size.height * 0.5,
-    );
-
-    // Gelombang keempat (ke atas)
-    path.quadraticBezierTo(
-      size.width * 0.9,
-      size.height * 0.3,
-      size.width,
-      size.height * 0.6,
-    );
-
-    // Lanjutkan ke kanan bawah
-    path.lineTo(size.width, 0);
-
-    // Tutup path
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-}
 
 // Konstanta untuk warna dan ukuran
 class AppColors {

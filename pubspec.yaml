@@ -38,6 +38,7 @@ dependencies:
   flutter_launcher_icons: ^0.14.3
   tflite_flutter: ^0.11.0
   image: ^4.5.2 # Untuk memproses gambar (resize, decode, dll.)
+  url_launcher: ^6.3.1
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -69,11 +70,13 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
+    - assets/images/capung/
     - assets/images/1.png
     - assets/images/2.png
     - assets/images/3.png
     - assets/images/4.png
     - assets/images/5.png
+    - assets/images/5.2.png
     - assets/images/6.png
     - assets/images/7.png
     - assets/logo/logocapung.jpg

@@ -17,11 +17,11 @@ class MessageBubble extends StatelessWidget {
           gradient: isUser
               ? null // Warna solid untuk pengguna
               : const LinearGradient(
-                  colors: [Color(0xFF2DDCBE), Color(0xFF004C7E)],
+                  colors: [Color(0xFFFECA5C), Color(0xFFA55500)],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
-          color: isUser ? Colors.white : null, // Warna solid untuk pengguna
+          color: isUser ? const Color.fromARGB(255, 255, 226, 195) : null, // Warna solid untuk pengguna
           borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(12.0),
             topRight: const Radius.circular(12.0),
@@ -32,7 +32,7 @@ class MessageBubble extends StatelessWidget {
         child: Text(
           content,
           style: TextStyle(
-            color: isUser ? const Color(0xFF004C7E) : Colors.white,
+            color: isUser ? const Color.fromARGB(255, 90, 47, 0) : Colors.white,
           ),
         ),
       ),

@@ -1,0 +1,111 @@
+import 'capung.dart';
+
+class CapungData {
+  static final List<Capung> capungList = [
+    Capung(
+      latinName: 'Orthetrum sabina',
+      indonesianName: 'Capung Hijau',
+      description: 'Capung dengan tubuh ramping dan warna hijau yang indah.',
+      descriptionParagraph: 'Orthetrum sabina adalah spesies capung yang ditemukan di Asia. Capung ini memiliki tubuh ramping dengan warna hijau yang mencolok, yang membantu mereka menyatu dengan vegetasi di sekitarnya. Mereka sering ditemukan di dekat badan air tawar seperti kolam dan sungai. Capung ini sangat gesit dan sering terlihat terbang rendah di atas permukaan air. Betina biasanya lebih besar dari jantan, dan kedua jenis kelamin memiliki tanda-tanda khas pada tubuh mereka.',
+      imagePath: 'assets/images/capung/capung1.png',
+    ),
+    Capung(
+      latinName: 'Pantala flavescens',
+      indonesianName: 'Capung Kuning',
+      description: 'Capung dengan sayap besar dan warna kekuningan.',
+      descriptionParagraph: 'Pantala flavescens adalah spesies capung migrasi yang ditemukan di berbagai wilayah Asia, Afrika, dan Amerika. Capung ini memiliki warna kekuningan dan sayap besar yang membedakannya dari spesies lain. Spesies ini terkenal karena migrasi jarak jauh yang dapat mencakup ribuan kilometer. Mereka sering ditemukan di iklim tropis dan subtropis, terutama di sekitar lahan basah dan sawah.',
+      imagePath: 'assets/images/capung/capung1.png',
+    ),
+    Capung(
+      latinName: 'Aeshna cyanea',
+      indonesianName: 'Capung Biru',
+      description: 'Capung dengan warna biru cerah pada tubuh dan sayap.',
+      descriptionParagraph: 'Aeshna cyanea, atau lebih dikenal dengan nama capung biru, adalah spesies capung besar yang ditemukan di Eropa dan beberapa bagian Asia. Ciri khas capung ini adalah warna biru cerah yang mencolok pada tubuh dan sayapnya. Spesies ini sering ditemukan di dekat kolam, danau, dan sungai, serta dikenal karena kebiasaannya terbang tinggi. Capung ini sangat cepat dalam berburu mangsanya dan sering menangkap serangga terbang lainnya di udara.',
+      imagePath: 'assets/images/capung/capung1.png',
+    ),
+    Capung(
+      latinName: 'Sympetrum sanguineum',
+      indonesianName: 'Capung Merah',
+      description: 'Capung dengan warna merah pada tubuh dan sayap.',
+      descriptionParagraph: 'Sympetrum sanguineum, atau disebut juga dengan capung ruddy darter, adalah spesies capung yang mudah dikenali karena warna merah yang mencolok pada tubuh dan sayapnya, yang lebih jelas terlihat pada jantan. Spesies ini sering ditemukan di wilayah Eropa dan Asia, terutama di sekitar kolam, danau, dan rawa-rawa. Pada musim kawin, jantan sering mempertahankan wilayahnya dan melakukan pertunjukan terbang untuk menarik perhatian betina.',
+      imagePath: 'assets/images/capung/capung1.png',
+    ),
+    Capung(
+      latinName: 'Libellula depressa',
+      indonesianName: 'Capung Raksasa',
+      description: 'Capung dengan tubuh lebar dan besar.',
+      descriptionParagraph: 'Libellula depressa, yang dikenal dengan nama capung broad-bodied chaser, adalah spesies capung besar yang ditemukan di Eropa dan beberapa bagian Asia. Capung ini memiliki tubuh yang lebar dan besar dengan sayap transparan yang lebar. Jantan memiliki warna biru cerah, sementara betina berwarna coklat kekuningan. Mereka biasanya ditemukan di dekat kolam dan memiliki perilaku teritorial, terutama pada musim kawin.',
+      imagePath: 'assets/images/capung/capung1.png',
+    ),
+    Capung(
+      latinName: 'Crocothemis erythraea',
+      indonesianName: 'Capung Merah Darah',
+      description: 'Capung dengan warna merah darah yang mencolok.',
+      descriptionParagraph: 'Crocothemis erythraea, atau capung merah darah, memiliki warna merah terang pada tubuh dan sayapnya, yang menjadikannya sangat mencolok di habitatnya. Spesies ini banyak ditemukan di sekitar kolam, sungai, dan rawa di wilayah tropis dan subtropis. Capung ini dikenal karena kebiasaannya terbang rendah di atas air dan sering terlihat duduk di tepi vegetasi, menunggu mangsanya.',
+      imagePath: 'assets/images/capung/capung1.png',
+    ),
+    Capung(
+      latinName: 'Brachythemis leucosticta',
+      indonesianName: 'Capung Punggung Putih',
+      description: 'Capung dengan garis putih di sepanjang sayap.',
+      descriptionParagraph: 'Brachythemis leucosticta, atau capung punggung putih, adalah spesies capung kecil yang ditemukan di wilayah Afrika dan Asia. Capung ini memiliki garis putih khas yang terlihat jelas di sepanjang sayapnya, yang memisahkannya dari capung lainnya. Mereka sering ditemukan di dekat perairan dangkal seperti kolam dan rawa-rawa. Spesies ini aktif sepanjang hari dan sering terlihat terbang rendah di atas permukaan air.',
+      imagePath: 'assets/images/capung/capung1.png',
+    ),
+    Capung(
+      latinName: 'Ischnura elegans',
+      indonesianName: 'Capung Elegan',
+      description: 'Capung kecil dengan warna tubuh yang cerah.',
+      descriptionParagraph: 'Ischnura elegans, atau capung elegan, adalah spesies capung kecil yang ditemukan di Eropa, Afrika, dan Asia. Capung ini dikenal dengan tubuhnya yang cerah dan warna-warna mencolok, terutama pada jantan yang berwarna biru. Mereka sering ditemukan di perairan yang tenang seperti kolam dan sungai kecil. Betina memiliki warna yang lebih pucat dan sering terlihat lebih sering di sekitar vegetasi.',
+      imagePath: 'assets/images/capung/capung1.png',
+    ),
+    Capung(
+      latinName: 'Anax imperator',
+      indonesianName: 'Capung Penguasa',
+      description: 'Capung besar dengan warna biru dan hijau.',
+      descriptionParagraph: 'Anax imperator, atau capung penguasa, adalah salah satu spesies capung terbesar yang ditemukan di Eropa, Afrika, dan Asia. Capung ini memiliki tubuh besar dan warna biru-hijau yang khas. Mereka sering ditemukan di sekitar perairan seperti sungai, kolam, dan danau. Spesies ini sangat aktif dan memiliki kebiasaan berburu serangga di udara pada siang hari.',
+      imagePath: 'assets/images/capung/capung1.png',
+    ),
+    Capung(
+      latinName: 'Orthetrum cancellatum',
+      indonesianName: 'Capung Berjaring',
+      description: 'Capung dengan sayap yang terlihat seperti jaring.',
+      descriptionParagraph: 'Orthetrum cancellatum, atau capung berjaring, memiliki ciri khas sayap yang terlihat seperti jaring atau memiliki pola yang menyerupai jaringan pada sayapnya. Spesies ini ditemukan di Eropa, Asia, dan Afrika. Mereka sering ditemukan di habitat perairan seperti sungai dan kolam. Capung ini memiliki kemampuan terbang yang sangat baik dan sering berburu serangga terbang lainnya.',
+      imagePath: 'assets/images/capung/capung1.png',
+    ),
+    Capung(
+      latinName: 'Erythemis simplicollis',
+      indonesianName: 'Capung Pemburu',
+      description: 'Capung dengan tubuh ramping dan warna cerah.',
+      descriptionParagraph: 'Erythemis simplicollis, atau capung pemburu, ditemukan di Amerika Utara dan Amerika Tengah. Mereka memiliki tubuh ramping dengan warna tubuh yang cerah, terutama warna hijau dan biru pada jantan. Capung ini sering ditemukan di sekitar perairan seperti kolam dan sungai kecil, dan mereka terkenal sebagai pemburu yang efisien, menangkap berbagai jenis serangga.',
+      imagePath: 'assets/images/capung/capung1.png',
+    ),
+    Capung(
+      latinName: 'Gomphus viridifrons',
+      indonesianName: 'Capung Hijau Kuning',
+      description: 'Capung dengan kombinasi warna hijau dan kuning.',
+      descriptionParagraph: 'Gomphus viridifrons adalah spesies capung yang ditemukan di wilayah Eropa, terutama di sekitar sungai-sungai besar dan kolam. Capung ini memiliki kombinasi warna hijau dan kuning pada tubuhnya, menjadikannya sangat mencolok di habitat alami mereka. Mereka sering terbang rendah di atas air, berburu serangga kecil dan memiliki perilaku teritorial yang kuat.',
+      imagePath: 'assets/images/capung/capung1.png',
+    ),
+    Capung(
+      latinName: 'Tramea onusta',
+      indonesianName: 'Capung Pembawa Keberuntungan',
+      description: 'Capung dengan sayap gelap dan warna tubuh cokelat.',
+      descriptionParagraph: 'Tramea onusta, atau capung pembawa keberuntungan, ditemukan di Amerika Utara dan daerah tropis lainnya. Spesies ini memiliki tubuh coklat dan sayap gelap yang memberikan kontras mencolok. Capung ini sangat adaptif dan sering terlihat di sekitar rawa dan sungai yang tenang. Mereka dikenal karena terbang dengan cepat dan berburu serangga di udara.',
+      imagePath: 'assets/images/capung/capung1.png',
+    ),
+    Capung(
+      latinName: 'Cordulegaster boltonii',
+      indonesianName: 'Capung Mata Rantai',
+      description: 'Capung dengan warna tubuh seperti rantai.',
+      descriptionParagraph: 'Cordulegaster boltonii, atau capung mata rantai, ditemukan di wilayah Eropa dan Asia. Capung ini dikenal dengan pola warna tubuh yang menyerupai rantai, yang membuatnya sangat unik. Mereka hidup di sekitar sungai-sungai pegunungan yang jernih dan memiliki kebiasaan berburu serangga besar. Capung ini lebih suka terbang di sekitar vegetasi tinggi yang tumbuh di tepi sungai.',
+      imagePath: 'assets/images/capung/capung1.png',
+    ),
+    Capung(
+      latinName: 'Somatochlora metallica',
+      indonesianName: 'Capung Biru Tua',
+      description: 'Capung dengan warna biru tua yang cemerlang.',
+      descriptionParagraph: 'Somatochlora metallica adalah capung dengan tubuh biru tua yang sangat mencolok dan cemerlang. Mereka sering ditemukan di rawa-rawa dan sungai yang jernih di Eropa dan Asia. Spesies ini dikenal dengan kemampuan terbang yang sangat lincah dan berburu serangga terbang lainnya di udara. Jantan capung ini memiliki warna yang lebih terang dibandingkan betina.',
+      imagePath: 'assets/images/capung/capung1.png',
+    ),
+  ];
+}

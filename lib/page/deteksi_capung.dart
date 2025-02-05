@@ -5,7 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as img;
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tflite_flutter/tflite_flutter.dart'; // Import tflite_flutter
+import 'package:tflite_flutter/tflite_flutter.dart';
+
+import '../widgets/wave.dart'; // Import tflite_flutter
 
 class DeteksiCapungPage extends StatefulWidget {
   const DeteksiCapungPage({super.key});
@@ -24,8 +26,8 @@ class _DeteksiCapungPageState extends State<DeteksiCapungPage> {
   // Memuat model TFLite
   Future<void> loadModel() async {
     try {
-      // Memuat model dari file .tflite
-      _interpreter = await Interpreter.fromAsset('assets/capung_model_v2.tflite');
+      _interpreter =
+          await Interpreter.fromAsset('assets/capung_model_v2.tflite');
       print("Model berhasil dimuat");
     } catch (e) {
       print("Error loading model: $e");
@@ -71,19 +73,15 @@ class _DeteksiCapungPageState extends State<DeteksiCapungPage> {
   }
 
   // Fungsi untuk melakukan prediksi
-  Future<void> detectImage(File image) async {
+  Future detectImage(File image) async {
     setState(() {
       _isLoading = true;
       _result = 'Mendeteksi...';
     });
 
     try {
-      // Membaca file gambar dan mengubahnya menjadi bytes
       var imgBytes = image.readAsBytesSync();
-      // Decode gambar menggunakan package 'image'
       var decodedImage = img.decodeImage(Uint8List.fromList(imgBytes));
-
-      // Cek jika gambar berhasil didecode
       if (decodedImage == null) {
         setState(() {
           _isLoading = false;
@@ -92,27 +90,20 @@ class _DeteksiCapungPageState extends State<DeteksiCapungPage> {
         return;
       }
 
-      // Resize gambar agar sesuai dengan ukuran input model
+      // Resize gambar ke ukuran input model
       var resizedImage = img.copyResize(decodedImage, width: 224, height: 224);
-
-      // Mengonversi gambar hasil resize menjadi tensor input
       var input = preprocessImage(resizedImage);
 
-      // Menyiapkan output sesuai dengan jumlah kelas (3 kelas dalam kasus ini)
-      var output = List.filled(1, List.filled(3, 0.0))
-          .reshape([1, 3]); // Sesuaikan dengan output model Anda
+      // Inisialisasi output
+      var output = List.filled(1, List.filled(3, 0.0)).reshape([1, 3]);
 
-      // Menjalankan model
       if (_interpreter != null) {
         _interpreter!.run(input, output);
-
-        // Mengambil hasil prediksi
         var recognitions = output[0];
 
-        // Menggunakan max dan indexOf untuk mencari label dengan confidence tertinggi
+        // Cari label dengan confidence tertinggi
         var maxConfidence = recognitions[0];
         var labelIndex = 0;
-
         for (int i = 1; i < recognitions.length; i++) {
           if (recognitions[i] > maxConfidence) {
             maxConfidence = recognitions[i];
@@ -120,11 +111,21 @@ class _DeteksiCapungPageState extends State<DeteksiCapungPage> {
           }
         }
 
-        setState(() {
-          _isLoading = false;
-          _result =
-              'Prediksi: ${labels[labelIndex]} (Confidence: ${(maxConfidence * 100).toStringAsFixed(2)}%)';
-        });
+        // Validasi apakah gambar mengandung capung
+        if (maxConfidence < 0.5) {
+          // Jika confidence rendah, anggap tidak ada capung
+          setState(() {
+            _isLoading = false;
+            _result = 'Tidak ada gambar capung';
+          });
+        } else {
+          // Jika confidence cukup tinggi, tampilkan hasil deteksi
+          setState(() {
+            _isLoading = false;
+            _result =
+                'Prediksi: ${labels[labelIndex]} (Confidence: ${(maxConfidence * 100).toStringAsFixed(2)}%)';
+          });
+        }
       } else {
         setState(() {
           _isLoading = false;
@@ -145,16 +146,14 @@ class _DeteksiCapungPageState extends State<DeteksiCapungPage> {
         1,
         (_) => List.generate(
             224, (_) => List.generate(224, (_) => List.filled(3, 0.0))));
-
     for (var y = 0; y < image.height; y++) {
       for (var x = 0; x < image.width; x++) {
         var pixel = image.getPixel(x, y);
-        input[0][y][x][0] = pixel.r / 255.0; // Normalisasi channel Red
-        input[0][y][x][1] = pixel.g / 255.0; // Normalisasi channel Green
-        input[0][y][x][2] = pixel.b / 255.0; // Normalisasi channel Blue
+        input[0][y][x][0] = pixel.r / 255.0;
+        input[0][y][x][1] = pixel.g / 255.0;
+        input[0][y][x][2] = pixel.b / 255.0;
       }
     }
-
     return input;
   }
 
@@ -167,126 +166,206 @@ class _DeteksiCapungPageState extends State<DeteksiCapungPage> {
 
   @override
   void dispose() {
-    _interpreter?.close(); // Menutup interpreter saat widget di-dispose
+    _interpreter?.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Deteksi Capung',
-          style: GoogleFonts.roboto(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
+      backgroundColor: Colors.white,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(100), // Tinggi AppBar disesuaikan
+        child: AppBar(
+          title: Text(
+            'Deteksi Capung',
+            style: GoogleFonts.roboto(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: const Color.fromARGB(255, 255, 255, 255),
+            ),
           ),
-        ),
-        backgroundColor: const Color(0xFF2C6A77), // Biru Laut
-        elevation: 0, // Menghilangkan shadow di bawah AppBar
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 32.0),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          backgroundColor: Colors.transparent, // Transparent background
+          elevation: 0,
+          flexibleSpace: Stack(
             children: [
-              // Gambar yang dipilih atau placeholder
-              _image == null
-                  ? Container(
-                      width: 300,
-                      height: 300,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Tidak ada gambar yang dipilih.',
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.roboto(
-                            fontSize: 18,
-                            color: Colors.black54,
-                          ),
-                        ),
-                      ),
-                    )
-                  : ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: Image.file(
-                        _image!,
-                        width: 300,
-                        height: 300,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-              const SizedBox(height: 20),
-
-              // Status deteksi
-              _isLoading
-                  ? CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                          const Color(0xFF2C6A77)),
-                    )
-                  : Text(
-                      _result,
-                      style: GoogleFonts.roboto(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xFF8E735B), // Cokelat Hangat
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-              const SizedBox(height: 40),
-
-              // Tombol Pilih Gambar dari Galeri
-              ElevatedButton(
-                onPressed: pickImageFromGallery,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF8E735B), // Cokelat Hangat
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  elevation: 4,
-                ),
-                child: Text(
-                  'Pilih Gambar dari Galeri',
-                  style: GoogleFonts.roboto(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+              // Background transparan
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.transparent, // Warna transparan
                 ),
               ),
-              const SizedBox(height: 10),
-
-              // Tombol Ambil Foto dari Kamera
-              ElevatedButton(
-                onPressed: pickImageFromCamera,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF8E735B), // Cokelat Hangat
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  elevation: 4,
-                ),
-                child: Text(
-                  'Ambil Foto dari Kamera',
-                  style: GoogleFonts.roboto(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+              // Wave dengan gradient
+              Transform.translate(
+                offset: Offset(0, 0), // Geser wave ke bawah
+                child: ClipPath(
+                  clipper: WaveAppBar(),
+                  child: Container(
+                    height: 220, // Tinggi container disesuaikan
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Color(0xFFda8937), Color(0xFFbb7224)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
                   ),
                 ),
               ),
             ],
           ),
         ),
+      ),
+      body: Stack(
+        children: [
+          // Gambar background di bagian bawah layar
+          Positioned(
+            bottom: 305, // Menggeser gambar ke atas
+            left: -20,
+            right: 0,
+            child: Image.asset(
+              'assets/images/5.png', // Gambar background
+              width: MediaQuery.of(context).size.width *
+                  0.9, // Ukuran gambar diatur
+              height: 400, // Tinggi gambar diatur
+              fit: BoxFit.cover, // Memastikan gambar tetap proporsional
+            ),
+          ),
+          // Konten utama
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 32.0),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Gambar yang dipilih atau placeholder
+                  _image == null
+                      ? Container(
+                          width: 300,
+                          height: 300,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.7),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: const Color(0xFF116baf), // Warna border
+                              width: 3.0, // Ketebalan border
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Tidak ada gambar yang dipilih.',
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.roboto(
+                                fontSize: 18,
+                                color: Colors.black54,
+                              ),
+                            ),
+                          ),
+                        )
+                      : ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: const Color(0xFF116baf), // Warna border
+                                width: 3.0, // Ketebalan border
+                              ),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Image.file(
+                              _image!,
+                              width: 300,
+                              height: 300,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                  const SizedBox(height: 20),
+                  // Status deteksi
+                  _isLoading
+                      ? CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              const Color(0xFF116baf)),
+                        )
+                      : Text(
+                          _result,
+                          style: GoogleFonts.roboto(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: const Color.fromARGB(
+                                255, 132, 202, 255), // Biru muda
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                  const SizedBox(height: 40),
+                  // Tombol Pilih Gambar dari Galeri
+                  ElevatedButton(
+                    onPressed: pickImageFromGallery,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF116baf), // Biru muda
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 60, vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      elevation: 4,
+                    ),
+                    child: Text(
+                      'Pilih Gambar dari Galeri',
+                      style: GoogleFonts.roboto(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  // Tombol Ambil Foto dari Kamera
+                  ElevatedButton(
+                    onPressed: pickImageFromCamera,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF116baf), // Biru muda
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 60, vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      elevation: 4,
+                    ),
+                    child: Text(
+                      'Ambil Foto dari Kamera',
+                      style: GoogleFonts.roboto(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          // Wave di bagian bawah layar
+          Positioned(
+            bottom: -50, // Menggeser wave ke atas agar terlihat
+            left: 0,
+            right: 0,
+            child: ClipPath(
+              clipper: BottomWave(),
+              child: Container(
+                height: 150, // Tinggi wave
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Color(0xFFda8937), Color(0xFFbb7224)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

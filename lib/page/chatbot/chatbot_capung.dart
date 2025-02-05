@@ -68,7 +68,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   width: MediaQuery.of(context).size.width * 0.8,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF577BC1), // Warna biru CapungID
+                    color: const Color(0xFFA55500), // Warna biru CapungID
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
@@ -84,7 +84,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     children: [
                       const SizedBox(height: 8),
                       Text(
-                        'Chatpung ini masih dalam proses pengembangan.\nFitur-fitur akan terus ditingkatkan.',
+                        'ChatPung ini masih dalam proses pengembangan.\nFitur-fitur akan terus ditingkatkan.',
                         style: GoogleFonts.roboto(
                           fontSize: 14,
                           color: Colors.white,
@@ -114,20 +114,27 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F9FF), // Background lembut biru muda
+      backgroundColor: const Color(0xFFffffff), // Background lembut biru muda
       appBar: AppBar(
         title: Text(
-          'Chatpung',
+          'ChatPung',
           style: GoogleFonts.roboto(
-            color: const Color(0xFF344CB7), // Warna biru tua CapungID
             fontWeight: FontWeight.bold,
             fontSize: 20,
+            foreground: Paint()
+              ..shader = LinearGradient(
+                colors: [Color(0xFFFECA5C), Color(0xFFA55500)], // Gradasi warna
+                begin: Alignment.topCenter,
+                end: Alignment.bottomRight,
+              ).createShader(
+                  Rect.fromLTWH(0, 0, 200, 70)), // Tentukan area teks
           ),
         ),
         centerTitle: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor:
+            const Color.fromARGB(255, 255, 255, 255), // Gradasi biru CapungID
         elevation: 0,
-        iconTheme: const IconThemeData(color: Color(0xFF344CB7)),
+        iconTheme: const IconThemeData(color: Color(0xFFA55500)),
         actions: [
           GestureDetector(
             onTap: () {
@@ -135,87 +142,103 @@ class _ChatScreenState extends State<ChatScreen> {
             },
             child: const Padding(
               padding: EdgeInsets.only(right: 16.0),
-              child: Icon(Icons.info_outline, color: Color(0xFF344CB7)),
+              child: Icon(Icons.info_outline, color: Color(0xFFA55500)),
             ),
           ),
         ],
       ),
-      body: Column(
+      body: Stack(
         children: [
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              itemCount: _messages.length + (_isThinking ? 1 : 0),
-              itemBuilder: (context, index) {
-                if (_isThinking && index == _messages.length) {
-                  return const ThinkingBubble();
-                }
-                final message = _messages[index];
-                final isUser = message['role'] == 'user';
-                return MessageBubble(
-                  content: message['content'] ?? '',
-                  isUser: isUser,
-                );
-              },
+          Positioned(
+            top: MediaQuery.of(context).size.height *
+                0.36, // Memindahkan gambar sedikit ke bawah
+            left: 0,
+            right: 0,
+            child: Image.asset(
+              'assets/images/7.png',
+              fit: BoxFit.cover, // Gambar menutupi area dengan proporsional
+              height: MediaQuery.of(context).size.height *
+                  0.5, // Atur ketinggian gambar sesuai dengan kebutuhan
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 10,
-                          spreadRadius: 1,
+          Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  itemCount: _messages.length + (_isThinking ? 1 : 0),
+                  itemBuilder: (context, index) {
+                    if (_isThinking && index == _messages.length) {
+                      return const ThinkingBubble();
+                    }
+                    final message = _messages[index];
+                    final isUser = message['role'] == 'user';
+                    return MessageBubble(
+                      content: message['content'] ?? '',
+                      isUser: isUser,
+                    );
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 10,
+                              spreadRadius: 1,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    child: TextField(
-                      controller: _controller,
-                      style: GoogleFonts.roboto(fontSize: 16),
-                      decoration: InputDecoration(
-                        hintText: 'Tulis pesan Anda...',
-                        hintStyle: GoogleFonts.roboto(
-                          fontSize: 16,
-                          color: Colors.grey,
+                        child: TextField(
+                          controller: _controller,
+                          style: GoogleFonts.roboto(fontSize: 16),
+                          decoration: InputDecoration(
+                            hintText: 'Ayo tanya tentang capung...',
+                            hintStyle: GoogleFonts.roboto(
+                              fontSize: 16,
+                              color: Colors.grey,
+                            ),
+                            border: InputBorder.none,
+                          ),
                         ),
-                        border: InputBorder.none,
                       ),
                     ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                GestureDetector(
-                  onTap: _sendMessage,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [Color(0xFF344CB7), Color(0xFF577BC1)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(30),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xFF344CB7).withOpacity(0.3),
-                          blurRadius: 8,
-                          offset: const Offset(0, 4),
+                    const SizedBox(width: 10),
+                    GestureDetector(
+                      onTap: _sendMessage,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFFA55500), Color(0xFFda8937)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFFA55500).withOpacity(0.3),
+                              blurRadius: 8,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
                         ),
-                      ],
+                        padding: const EdgeInsets.all(12),
+                        child: const Icon(Icons.send, color: Colors.white),
+                      ),
                     ),
-                    padding: const EdgeInsets.all(12),
-                    child: const Icon(Icons.send, color: Colors.white),
-                  ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),
@@ -234,7 +257,7 @@ class ThinkingBubble extends StatelessWidget {
         children: [
           const CircleAvatar(
             radius: 15,
-            backgroundColor: Color(0xFF344CB7),
+            backgroundColor: Color(0xFFA55500),
             child: Icon(Icons.smart_toy, color: Colors.white, size: 16),
           ),
           const SizedBox(width: 10),
@@ -267,7 +290,8 @@ class DotLoader extends StatefulWidget {
   _DotLoaderState createState() => _DotLoaderState();
 }
 
-class _DotLoaderState extends State<DotLoader> with SingleTickerProviderStateMixin {
+class _DotLoaderState extends State<DotLoader>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
   @override
@@ -298,7 +322,7 @@ class _DotLoaderState extends State<DotLoader> with SingleTickerProviderStateMix
                 opacity: (_controller.value * 3 - index).clamp(0.0, 1.0),
                 child: const CircleAvatar(
                   radius: 4,
-                  backgroundColor: Color(0xFF344CB7),
+                  backgroundColor: Color(0xFFA55500),
                 ),
               ),
             );
