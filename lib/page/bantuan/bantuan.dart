@@ -43,6 +43,11 @@ class BantuanCapungPage extends StatelessWidget {
               '3. Untuk bantuan lebih lanjut, kunjungi halaman bantuan atau hubungi tim pengembang.',
               style: GoogleFonts.roboto(fontSize: 18),
             ),
+            const SizedBox(height: 10),
+            Text(
+              '22090098.ilham@student.poltek.ac.id',
+              style: GoogleFonts.roboto(fontSize: 18),
+            ),
           ],
         ),
       ),
