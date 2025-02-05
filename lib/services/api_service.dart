@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  final String groqApiKey = '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';
+  final String groqApiKey = 'yourapikey';
   final String groqBaseUrl = 'https://api.groq.com/openai/v1';
   final String groqModel = 'llama-3.3-70b-versatile';
 
